@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import "./styles.css";
 import logoImg from "../../assets/logo.svg";
 import api from "../../services/api";
+import CurrencyInput from 'react-currency-input';
 
 export default function NewIncident() {
   const ongId = localStorage.getItem("ongId");
@@ -13,6 +14,10 @@ export default function NewIncident() {
   const [value, setValue] = useState(0.0);
 
   const history = useHistory();
+
+  function handleValueChange(event, maskedvalue, floatvalue){
+      setValue(floatvalue);
+  }
 
   async function handlerNewIncident(e) {
     e.preventDefault();
@@ -63,11 +68,12 @@ export default function NewIncident() {
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
-          <input
-            placeholder="Valor em reais"
-            value={value}
-            onChange={e => setValue(e.target.value)}
-          />
+          <CurrencyInput value={value} 
+            onChangeEvent={handleValueChange}
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$ "/>
+
           <div className="button-group">
             <button className="button-back" type="submit">
               Cancelar
